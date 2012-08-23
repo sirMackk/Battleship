@@ -1,4 +1,5 @@
 import random
+from ships import *
 
 #TODO - make mutator functions for the board game
 #     - an interface to place ships along with rotation
@@ -11,10 +12,10 @@ class board(object):
 
     def __init__(self):
         
-        self.y_axis = 15
-        self.x_axis = 25
-        self.p_map = [[0 for i in range(self.y_axis)] for i in range(self.x_axis)]
-        self.c_map = [[0 for i in range(self.y_axis)] for i in range(self.x_axis)]
+        self.Y_AXIS = 15
+        self.X_AXIS = 25
+        self.p_map = [[0 for i in range(self.Y_AXIS)] for i in range(self.X_AXIS)]
+        self.c_map = [[0 for i in range(self.Y_AXIS)] for i in range(self.X_AXIS)]
 
 
     def drawScreen(self):
@@ -22,7 +23,7 @@ class board(object):
         #print player map first on left hand side
         #then the computer on the right side. works kinda like a typewriter, using arrays for coordinates
         self.topScreen()
-        for i in range(0, self.y_axis):
+        for i in range(0, self.Y_AXIS):
             if i > 8:
                 yaxis = 3
             else:
@@ -33,7 +34,7 @@ class board(object):
             #human = true
             #CLEAN THIS CODE TO MAKE IT READABLE TO AVOID EASY PROBLEMS
             player = True
-            for j in range(0, self.x_axis):
+            for j in range(0, self.X_AXIS):
             #loop for x axis
                 mapy += self.drawOcean(player, j, i)
 
@@ -46,7 +47,7 @@ class board(object):
             #draw computer y axis
             mapy += '%d' % (i+1)
             
-            for j in range(0, self.x_axis):
+            for j in range(0, self.X_AXIS):
                 mapy += self.drawOcean(player, j, i)
             print mapy
         
@@ -82,26 +83,17 @@ class board(object):
         
         return mapx
 
-    # def placeShip(self, x, y, size, direction, player):
-         ##   copies the maps for collision detection
-            # temp_p_map = [self.p_map[i] for i in range(self.xaxis)]
-            # temp_c_map = [self.c_map[i] for i in range(self.xaxis)]
-        ##    true - human, false - computer
-            # players = {True: temp_p_map[x][y], False: temp_c_map[x][y]}
-           ## True is horizontal, False is verticle
-            # if direction == True: 
-                # for i range(size):
-               ##     use ifFree function here
-                    # if players[player] == 4 and:
-                        # return 'There\'s a sunk ship here'
+    def placeShip(self, shipy):
+        print shipy.getInfo()
+        return shipy.getInfo()
 
 
     def isFree(self, x, y, player):
     #usage : give x and y coordinates and the player for which to check if space is empty
     # true is human, false is computer - code will automagically pick correct board
 
-        temp_p_map = [self.p_map[i] for i in range(self.x_axis)]
-        temp_c_map = [self.c_map[i] for i in range(self.x_axis)]
+        temp_p_map = [self.p_map[i] for i in range(self.X_AXIS)]
+        temp_c_map = [self.c_map[i] for i in range(self.X_AXIS)]
 
         or_x = x
         or_y = y
@@ -119,25 +111,25 @@ class board(object):
 
 
         #checks upper row
-        elif or_x != self.x_axis-1 and or_y == 0:
+        elif or_x != self.X_AXIS-1 and or_y == 0:
             return self.isFreeSub(x, y, player, [0, 1], [-1, 0, 1], temp_p_map, temp_c_map)
 
         #checks upper right corner
-        elif or_x == self.x_axis-1 and or_y == 0:
+        elif or_x == self.X_AXIS-1 and or_y == 0:
             return self.isFreeSub(x, y, player, [0, 1], [-1, 0], temp_p_map, temp_c_map)
 
 
         #checks bottom left corner:
-        elif or_x == 0 and or_y == self.y_axis-1:
+        elif or_x == 0 and or_y == self.Y_AXIS-1:
             return self.isFreeSub(x, y, player, [-1, 0], [0, 1], temp_p_map, temp_c_map)
 
         #check bottom right corner:
-        elif or_x == self.x_axis-1 and or_y == self.y_axis-1:
+        elif or_x == self.X_AXIS-1 and or_y == self.Y_AXIS-1:
             return self.isFreeSub(x, y, player, [-1, 0], [-1, 0], temp_p_map, temp_c_map)
         
 
         #check bottom row:
-        elif or_x != self.x_axis-1 and or_y == self.y_axis-1:
+        elif or_x != self.X_AXIS-1 and or_y == self.Y_AXIS-1:
             return self.isFreeSub(x, y, player, [-1, 0], [-1, 0, 1], temp_p_map, temp_c_map)
 
 
@@ -147,7 +139,7 @@ class board(object):
             return self.isFreeSub(x, y, player, [-1, 0, 1], [0, 1], temp_p_map, temp_c_map)
 
         #check right column:
-        elif or_x == self.x_axis-1:
+        elif or_x == self.X_AXIS-1:
             return self.isFreeSub(x, y, player, [-1, 0, 1], [-1, 0], temp_p_map, temp_c_map)
         #not near corners or edges
         else:
