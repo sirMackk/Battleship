@@ -6,7 +6,7 @@ import random
 #     - make runner class that runs the game
 #     - make interface class that gives a connections between player and board
 #     - WORK ON SHIP PLACEMENT FUNCTION
-#     - WORK ON isFree FUNCTION
+#     - WORK ON isFree FUNCTION - DONE
 class board(object):
 
     def __init__(self):
@@ -29,18 +29,16 @@ class board(object):
                 yaxis = 4
             #draw human y axis
             mapy = '%s%d' % (' ' * yaxis, i+1)
-        #loop for y axis
+            #loop for y axis
             #human = true
             #CLEAN THIS CODE TO MAKE IT READABLE TO AVOID EASY PROBLEMS
             player = True
             for j in range(0, self.x_axis):
-
             #loop for x axis
-              
-            
                 mapy += self.drawOcean(player, j, i)
+
             player = not player
-        #make space
+            #make space
             if i > 8:
                 mapy += ' ' * 18
             else:
@@ -80,7 +78,7 @@ class board(object):
             mapx += 'S'
         else:
             mapx += self.oceanSign()
-      #  self.player = not self.player
+
         
         return mapx
 
@@ -100,15 +98,9 @@ class board(object):
 
     def isFree(self, x, y, player):
 
-
-#THIS FUNCTIONS NEEDS WORK, IT AINT WORKING RIGHT
-#ONLY REPORTS x,y obstacle, DOES NOT CHECK AROUND x, y
-
         temp_p_map = [self.p_map[i] for i in range(self.x_axis)]
         temp_c_map = [self.c_map[i] for i in range(self.x_axis)]
-        #true - human, false - computer
-        i = 0; j = 0
-        players = {True: temp_p_map[x+j][y+i], False: temp_c_map[x+j][y+i]}
+
         or_x = x
         or_y = y
         #checks to see if there's a free square of space around a ship
@@ -117,67 +109,60 @@ class board(object):
         #a map, then they check all spaces around them for free space. The for loops in these checks
         #either take away or add x or y coordinates for the checking routine.
 
-        #following code can be much improved upon using elifs or maybe another function
+        #following code can be much improved upon using elifs or maybe another function - DONE
+
         #checks upper right corner, if there's something in the way - returns false
         if or_x == 0 and or_y == 0:
-            for i in [0, 1]:
-                for j in [0, 1]:
-                    if players[player] == 1:
-                        return False
+            return self.isFreeSub(x, y, player, [0, 1], [0, 1], temp_p_map, temp_c_map)
+
 
         #checks upper row
-        if or_x != 24 and or_y == 0:
-            for i in [0, 1]:
-                for j in [-1, 0, 1]:
-                    if players[player] == 1:
-                        return False
+        elif or_x != self.x_axis-1 and or_y == 0:
+            return self.isFreeSub(x, y, player, [0, 1], [-1, 0, 1], temp_p_map, temp_c_map)
 
         #checks upper right corner
-        if or_x == 24 and or_y == 0:
-            for i in [0, 1]:
-                for j in [-1, 0]:
-                    if players[player] == 1:
-                        return False
+        elif or_x == self.x_axis-1 and or_y == 0:
+            return self.isFreeSub(x, y, player, [0, 1], [-1, 0], temp_p_map, temp_c_map)
+
 
         #checks bottom left corner:
-        if or_x == 0 and or_y == 14:
-            for i in [-1, 0]:
-                for j in [0, 1]:
-                    if players[player] == 1:
-                        return False
-        #check bottom row:
-        if or_x != 24 and or_y == 14:
-            for i in [-1, 0]:
-                for j in [-1, 0, 1]:
-                    if players[player] == 1:
-                        return False
-        #check bottom right corner:
-        if or_x == 24 and or_y == 14:
-            for i in [-1, 0]:
-                for j in [-1, 0]:
-                    if players[player] == 1:
-                        return False
-        #check left hand column:
-        if or_x == 0:
-            for i in [-1, 0, 1]:
-                for j in [0, 1]:
-                    if players[player] == 1:
-                        return False
-        #check right column:
-        if or_x == 24:
-            for i in [-1, 0, 1]:
-                for j in [-1, 0]:
-                    if players[player] == 1:
-                        return False
-        #not near corners or edges
-        for i in [-1, 0, 1]:
-            for j in [-1, 0, 1]:
-                if players[player] == 1:
-                    return False
-        #if none of these tests already returned False, it means area if free for placing a ship
-        #return true
+        elif or_x == 0 and or_y == self.y_axis-1:
+            return self.isFreeSub(x, y, player, [-1, 0], [0, 1], temp_p_map, temp_c_map)
 
+        #check bottom row:
+        elif or_x != self.x_axis-1 and or_y == self.y_axis-1:
+            return self.isFreeSub(x, y, player, [-1, 0], [-1, 0], temp_p_map, temp_c_map)
+
+        #check bottom right corner:
+        elif or_x == self.x_axis-1 and or_y == self.y_axis-1:
+            return self.isFreeSub(x, y, player, [-1, 0], [-1, 0], temp_p_map, temp_c_map)
+
+        #check left hand column:
+        elif or_x == 0:
+            return self.isFreeSub(x, y, player, [-1, 0, 1], [0, 1], temp_p_map, temp_c_map)
+
+        #check right column:
+        elif or_x == self.x_axis-1:
+            return self.isFreeSub(x, y, player, [-1, 0, 1], [-1, 0], temp_p_map, temp_c_map)
+        #not near corners or edges
+        else:
+            return self.isFreeSub(x, y, player, [-1, 0, 1], [-1, 0, 1], temp_p_map, temp_c_map)
+        #if none of these tests already returned False, it means area if free for placing a ship
+
+    
+    def isFreeSub(self, x, y, player, xes, yes, temp_p_map, temp_c_map):
+        #This function is a subrouting of the isFree function.
+        #It basically makes sure not to duplicate a lot of for loops
+        #xes and yes are the lists which contain the x, y coordinates
+        #around a ship to see if the space around the ship is free.
+        for i in xes:
+            for j in yes:
+                players = {True: temp_p_map[x+j][y+i], False: temp_c_map[x+j][y+i]}
+                if players[player] == 1:
+                    print "8"
+                    return False
         return True
+    
                 
             
         
@@ -190,9 +175,10 @@ class board(object):
 
 #simple test code
 game = board()
-game.p_map[5][12] = 1
-game.p_map[5][11] = 1
-game.p_map[6][11] = 1
+
+game.p_map[0][0] = 1
+game.c_map[0][0] = 1
+
 game.drawScreen()
 game.drawScreen()
 
@@ -202,6 +188,12 @@ game.drawScreen()
 
 print '\n\n'
 raw_input('Please enter coordinates to nuke: ')
-print game.isFree(5, 10, True)
-print game.isFree(5, 11, True)
 print game.isFree(0, 0, True)
+print game.isFree(0, 1, True)
+print game.isFree(1, 0, True)
+print game.isFree(1, 2, True)
+
+print game.isFree(0, 0, False)
+print game.isFree(0, 1, False)
+print game.isFree(1, 0, False)
+print game.isFree(1, 2, False)
