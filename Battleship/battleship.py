@@ -97,6 +97,8 @@ class board(object):
 
 
     def isFree(self, x, y, player):
+    #usage : give x and y coordinates and the player for which to check if space is empty
+    # true is human, false is computer - code will automagically pick correct board
 
         temp_p_map = [self.p_map[i] for i in range(self.x_axis)]
         temp_c_map = [self.c_map[i] for i in range(self.x_axis)]
@@ -129,13 +131,16 @@ class board(object):
         elif or_x == 0 and or_y == self.y_axis-1:
             return self.isFreeSub(x, y, player, [-1, 0], [0, 1], temp_p_map, temp_c_map)
 
-        #check bottom row:
-        elif or_x != self.x_axis-1 and or_y == self.y_axis-1:
-            return self.isFreeSub(x, y, player, [-1, 0], [-1, 0], temp_p_map, temp_c_map)
-
         #check bottom right corner:
         elif or_x == self.x_axis-1 and or_y == self.y_axis-1:
             return self.isFreeSub(x, y, player, [-1, 0], [-1, 0], temp_p_map, temp_c_map)
+        
+
+        #check bottom row:
+        elif or_x != self.x_axis-1 and or_y == self.y_axis-1:
+            return self.isFreeSub(x, y, player, [-1, 0], [-1, 0, 1], temp_p_map, temp_c_map)
+
+
 
         #check left hand column:
         elif or_x == 0:
@@ -159,41 +164,9 @@ class board(object):
             for j in yes:
                 players = {True: temp_p_map[x+j][y+i], False: temp_c_map[x+j][y+i]}
                 if players[player] == 1:
-                    print "8"
                     return False
         return True
     
                 
-            
+
         
-        
-                    
-                
-        
-            
-
-
-#simple test code
-game = board()
-
-game.p_map[0][0] = 1
-game.c_map[0][0] = 1
-
-game.drawScreen()
-game.drawScreen()
-
-# pMap[18][2] = 1
-# cMap[18][5] = 1
-# drawScreen(pMap, cMap)
-
-print '\n\n'
-raw_input('Please enter coordinates to nuke: ')
-print game.isFree(0, 0, True)
-print game.isFree(0, 1, True)
-print game.isFree(1, 0, True)
-print game.isFree(1, 2, True)
-
-print game.isFree(0, 0, False)
-print game.isFree(0, 1, False)
-print game.isFree(1, 0, False)
-print game.isFree(1, 2, False)
