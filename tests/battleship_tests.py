@@ -5,7 +5,7 @@ from Battleship.ships import *
 import random
 
 
-def test_isFree_human():
+def test_isFree_empty_human():
     game = board()
     
     #empty board tests for human
@@ -14,7 +14,7 @@ def test_isFree_human():
     assert_equal(game.isFree(0, game.Y_AXIS-1, True), True)
     assert_equal(game.isFree(game.X_AXIS-1, game.Y_AXIS-1, True), True)
 
-def test_isFree_computer():
+def test_isFree_empty_computer():
     game = board()
     
     #empty board tests for computer
@@ -210,34 +210,92 @@ def test_isFree_Computer():
 
 def test_placeShip_Big_Horizontal():
     game = board()
-    i = 0
-    while i < game.X_AXIS:
-        for j in range(game.Y_AXIS):           
-            bigShipH = fiveSquareShip(i, j, 'horizontal')
-            game.placeShip(bigShipH, True)
-            i += 5
-    i = 0
-    j = 0
-    while i < game.X_AXIS:
-        while j < game.Y_AXIS:
-            for k in range(i, i+5):
-                assert_equal(game.p_map[k][j], 1)
-            j += 2
-        i += 10
-            
+    game.placeShip(fiveSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), True)
 
-# def test_placeShip_Medium():
-    # mediumShip = fourSquareShip(5, 10, 'horizontal')
-    # assert_equal(mediumShip.getSize(), 4)
-    # assert_equal(mediumShip.getDirection(), 'horizontal')
-    # game = board()
-    # assert_equal(game.placeShip(mediumShip, True)['size'], 4)
-    # assert_equal(game.placeShip(mediumShip, True)['direction'], 'horizontal')
+    for i in range(5):
+        assert_equal(game.p_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)
 
-# def test_placeShip_Small():
-    # smallShip = threeSquareShip(5, 10, 'horizontal')
-    # assert_equal(smallShip.getSize(), 3)
-    # assert_equal(smallShip.getDirection(), 'horizontal')
-    # game = board()
-    # assert_equal(game.placeShip(smallShip, True)['size'], 3)
-    # assert_equal(game.placeShip(smallShip, True)['direction'], 'horizontal')
+def test_placeShip_Big_Verticle():
+    game = board()
+    game.placeShip(fiveSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), True)
+
+    for i in range(5):
+        assert_equal(game.p_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)
+
+def test_placeShip_Big_Horizontal_computer():
+    game = board()
+    game.placeShip(fiveSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), False)
+
+    for i in range(5):
+        assert_equal(game.c_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)
+
+def test_placeShip_Big_Verticle_computer():
+    game = board()
+    game.placeShip(fiveSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), False)
+
+    for i in range(5):
+        assert_equal(game.c_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)
+
+
+
+def test_placeShip_Medium_Horizontal():
+    game = board()
+    game.placeShip(fourSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), True)
+
+    for i in range(4):
+        assert_equal(game.p_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)
+
+def test_placeShip_Medium_Verticle():
+    game = board()
+    game.placeShip(fourSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), True)
+
+    for i in range(4):
+        assert_equal(game.p_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)
+
+def test_placeShip_Medium_Horizontal_computer():
+    game = board()
+    game.placeShip(fourSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), False)
+
+    for i in range(4):
+        assert_equal(game.c_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)
+
+def test_placeShip_Medium_Verticle_computer():
+    game = board()
+    game.placeShip(fourSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), False)
+
+    for i in range(4):
+        assert_equal(game.c_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)     
+
+def test_placeShip_Small_Verticle():
+    game = board()
+    game.placeShip(threeSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), True)
+
+    for i in range(3):
+        assert_equal(game.p_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)
+
+def test_placeShip_Small_Horizontal():
+    game = board()
+    game.placeShip(threeSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), True)
+
+    for i in range(3):
+        assert_equal(game.p_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)  
+
+def test_placeShip_Small_Horizontal_computer():
+    game = board()
+    game.placeShip(threeSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'horizontal'), False)
+
+    for i in range(3):
+        assert_equal(game.c_map[game.X_AXIS/2+i][game.Y_AXIS/2], 1)
+
+def test_placeShip_Small_Verticle_computer():
+
+
+
+    game = board()
+    game.placeShip(threeSquareShip(game.X_AXIS/2, game.Y_AXIS/2, 'verticle'), False)
+
+    for i in range(3):
+        assert_equal(game.c_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)       
+
+
+

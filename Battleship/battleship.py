@@ -69,7 +69,8 @@ class board(object):
     def drawOcean(self,player, j, i):
         players = {True: self.p_map[j][i], False: self.c_map[j][i]}
         mapx = ''
-        if players[player] == 1:
+
+        if players[player] == 1 and player == True:
              mapx += 'U'
         elif players[player] == 2:
             mapx += 'O'
@@ -205,14 +206,8 @@ class board(object):
                     return False
         return True
     
+    def battle(self, x, y, player
+    #functions responsible for battle, need to do ship placement gui first
+    #so I can figure out how to make hit points and hit/sunk ships
                 
 
-game = board()
-i = 0
-while i < game.X_AXIS:
-    for j in range(game.Y_AXIS):           
-        bigShipH = fiveSquareShip(i, j, 'horizontal')
-        game.placeShip(bigShipH, True)
-    i += 5
-
-game.drawScreen()
