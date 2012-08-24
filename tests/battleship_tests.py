@@ -208,10 +208,36 @@ def test_isFree_Computer():
     assert_equal(game.isFree(ran_x, ran_y+1, False), False)
     assert_equal(game.isFree(ran_x+1, ran_y+1, False), False)
 
-def test_placeShip():
-    bigShip = fiveSquareShip('horizontal')
-    assert_equal(bigShip.LENGTH, 5)
-    assert_equal(bigShip.direction, 'horizontal')
+def test_placeShip_Big_Horizontal():
     game = board()
-    game.placeShip(bigShip)
-    assert_equal(game.placeShip, 5)
+    i = 0
+    while i < game.X_AXIS:
+        for j in range(game.Y_AXIS):           
+            bigShipH = fiveSquareShip(i, j, 'horizontal')
+            game.placeShip(bigShipH, True)
+            i += 5
+    i = 0
+    j = 0
+    while i < game.X_AXIS:
+        while j < game.Y_AXIS:
+            for k in range(i, i+5):
+                assert_equal(game.p_map[k][j], 1)
+            j += 2
+        i += 10
+            
+
+# def test_placeShip_Medium():
+    # mediumShip = fourSquareShip(5, 10, 'horizontal')
+    # assert_equal(mediumShip.getSize(), 4)
+    # assert_equal(mediumShip.getDirection(), 'horizontal')
+    # game = board()
+    # assert_equal(game.placeShip(mediumShip, True)['size'], 4)
+    # assert_equal(game.placeShip(mediumShip, True)['direction'], 'horizontal')
+
+# def test_placeShip_Small():
+    # smallShip = threeSquareShip(5, 10, 'horizontal')
+    # assert_equal(smallShip.getSize(), 3)
+    # assert_equal(smallShip.getDirection(), 'horizontal')
+    # game = board()
+    # assert_equal(game.placeShip(smallShip, True)['size'], 3)
+    # assert_equal(game.placeShip(smallShip, True)['direction'], 'horizontal')

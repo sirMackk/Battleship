@@ -83,9 +83,55 @@ class board(object):
         
         return mapx
 
-    def placeShip(self, shipy):
-        print shipy.getInfo()
-        return shipy.getInfo()
+    def placeShip(self, ship, player):
+        #this function will accept a ship object, unwrap the information from it
+        #and use this information to place the ship on either human or computer board
+        #it'll also use the isFree function to determine if ship can be placed there
+        #and there will also be a routine to check if the ship doesnt go beyond the map
+
+        #makes temporary copies of the maps, should return or modify originals at the end
+        temp_p_map = [self.p_map[i] for i in range(self.X_AXIS)]
+        temp_c_map = [self.c_map[i] for i in range(self.X_AXIS)]
+        players = {True: temp_p_map, False: temp_c_map}
+        players_real = {True: self.p_map, False: self.c_map}
+        x, y = ship.getXY()
+        size = ship.getSize()
+        direction = ship.getDirection()
+
+        
+
+        if direction == 'horizontal' and x + size <= self.X_AXIS:
+            mapa = self.placeHorizontal(x, y, size, players[player], player)
+        elif direction == 'verticle' and y + size <= self.Y_AXIS:
+            mapa = self.placeVerticle(x, y, size, players[player], player)
+        else:
+            #return false if ship is too big and cant place it or if there's another ship in the way
+            return False
+
+        if mapa != False:
+            players_real[player] = mapa
+        else:
+            return False
+        
+    def placeHorizontal(self, x, y, size, map, player):
+        for i in range(x, x+size):
+            if self.isFree(i, y, player) == False:
+                return False
+        for i in range(x, x+size):
+            map[i][y] = 1
+        
+        return map
+
+    def placeVerticle(self, x, y, size, map, player):
+        for i in range(y, y+size):
+            if self.isFree(x, y, player) == False:
+                return False
+        for i in range(y, y+size):
+            map[x][i] = 1
+
+        return map
+        
+        
 
 
     def isFree(self, x, y, player):
@@ -161,4 +207,12 @@ class board(object):
     
                 
 
-        
+game = board()
+i = 0
+while i < game.X_AXIS:
+    for j in range(game.Y_AXIS):           
+        bigShipH = fiveSquareShip(i, j, 'horizontal')
+        game.placeShip(bigShipH, True)
+    i += 5
+
+game.drawScreen()
