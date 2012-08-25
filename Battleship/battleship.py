@@ -8,6 +8,7 @@ from ships import *
 #     - make interface class that gives a connections between player and board
 #     - WORK ON SHIP PLACEMENT FUNCTION
 #     - WORK ON isFree FUNCTION - DONE
+#     - redo function and class names according to pep 8
 class board(object):
 
     def __init__(self):
@@ -206,8 +207,10 @@ class board(object):
                     return False
         return True
     
-    def battle(self, x, y, player
+   # def battle(self, x, y, player
     #functions responsible for battle, need to do ship placement gui first
     #so I can figure out how to make hit points and hit/sunk ships
+
                 
 
+    
