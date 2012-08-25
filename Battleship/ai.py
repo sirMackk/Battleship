@@ -4,11 +4,15 @@ import random
 class ai(object):
     def __init__(self):
         
-        game = board()
+        self.game = board()
 
     def put_ships(self):
-        x = random.randint(1, game.X_AXIS+1)
-        y = random.randint(1, game.Y_AXIS+1)
+        #PLACE HOLDER FUNCTION TO TEST OUT PLAYGAME.PY
+        randomCPU = []
+        x = random.randint(1, self.game.X_AXIS+1)
+        y = random.randint(1, self.game.Y_AXIS+1)
+        randomCPU.append(x)
+        randomCPU.append(y)
         
         #random v or h
         dir = random.randint(0, 1)
@@ -16,5 +20,7 @@ class ai(object):
             dir = 'h'
         else:
             dir = 'v'
-        return '%d, %d, %s' % (x, y, dir)
+        randomCPU.append(dir)
+        return randomCPU
+        #return '%d, %d, %s' % (x, y, dir)
         

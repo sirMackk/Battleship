@@ -5,14 +5,16 @@ from ai import *
 class playgame(object):
     #start
     #human place ships
-    def __init__(self, game):
+    def __init__(self, game, ai):
 
-        self.SHIPS = {'fiveSquareShip': 1, 'fourSquareShip': 3, 'threeSquareShip': 4}
+        #self.SHIPS = {'fiveSquareShip': 1, 'fourSquareShip': 3, 'threeSquareShip': 4}
+        self.SHIPS = {fiveSquareShip: 1, fourSquareShip: 3, threeSquareShip: 4}
         #show some welcome screen here
         
         #this creates the board and draws it
         self.game = game
         game.drawScreen()
+        self.ai = ai
 
 
     def human_start(self):
@@ -35,8 +37,8 @@ class playgame(object):
         
     def put_ship(self, ships, iter, player):
         temp_list = []
-
-        for i in range(ships.value()[iter]):
+       
+        for i in range(ships.values()[iter]):
             the_ship = False
             while the_ship == False:
                 humanXY = False
@@ -45,16 +47,21 @@ class playgame(object):
                     if player == True:
                         game.drawScreen()
                         humanXY = self.verify_input(raw_input("Enter coordinates to place 3 square ship eg. x,y, h(orizontal)/v(verticle)\n"))
-                        print humanXY
+                        #print humanXY
                     else:
+                        
                         #work in progress
-                        humanXY = ai.put_ships()
-
+                        #son of a bitch AI, it's output doesnt get validated and causes
+                        #index out of bounds to happen in isFreeSUb
+                        humanXY = self.ai.put_ships()
+                #print humanXY
                 direction = {'h': 'horizontal', 'v': 'verticle'}
-                the_ship = (game.placeShip(ships.keys()[iter]((humanXY[0], humanXY[1], direction[humanXY[2]]), player))  
+        
+                the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
+                game.placeShip(the_ship, player)
                 #original function
                 # the_ship = (game.placeShip(threeSquareShip(humanXY[0], humanXY[1], #direction[humanXY[2]]), player))
-            print 'bla'
+            
             temp_list.append(the_ship)
         return temp_list
 
@@ -81,17 +88,18 @@ class playgame(object):
         verify[2].lower()
         if verify[2] != 'v' and verify[2] != 'h':
                 return False
-        
+        return verify
 
 #MAIN GAME LOOP:
 
 while True:
     game = board()
+    computer = ai()
     game.drawScreen()
-    play = playgame(game)
+    play = playgame(game, computer)
     play.human_start()
     play.computer_start()
-    input()
+    #input()
     game.drawScreen()
     input()
 
