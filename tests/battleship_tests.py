@@ -1,6 +1,7 @@
 from nose.tools import *
 from Battleship.battleship import *
 from Battleship.ships import *
+from Battleship.playgame import *
 
 import random
 
