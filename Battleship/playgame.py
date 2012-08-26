@@ -66,6 +66,7 @@ class playgame(object):
         return temp_list
 
     def verify_input(self, input):
+        
             #split into list
         verify = input.split(',')
         if len(verify) < 3:
@@ -76,32 +77,37 @@ class playgame(object):
 
             #verify if first two items are numbers and the third is either v or h
         try:
-            if int(verify[0]) in range(0, game.X_AXIS):
+            if int(verify[0]) in range(0, self.game.X_AXIS):
                 verify[0] = int(verify[0])-1
+            else:
+                return False
         except ValueError:
                     return False
         try:       
-            if int(verify[0]) in range(0, game.Y_AXIS):
+            if int(verify[0]) in range(0, self.game.Y_AXIS):
                 verify[1] = int(verify[1])-1
+            else:
+                return False
         except ValueError:
                 return False
         verify[2].lower()
         if verify[2] != 'v' and verify[2] != 'h':
                 return False
+        print verify
         return verify
 
 #MAIN GAME LOOP:
 
-while True:
-    game = board()
-    computer = ai()
-    game.drawScreen()
-    play = playgame(game, computer)
-    play.human_start()
-    play.computer_start()
-    #input()
-    game.drawScreen()
-    input()
+# while True:
+    # game = board()
+    # computer = ai()
+    # game.drawScreen()
+    # play = playgame(game, computer)
+    # play.human_start()
+    # play.computer_start()
+   
+    # game.drawScreen()
+    # input()
 
 
 

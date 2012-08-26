@@ -2,6 +2,7 @@ from nose.tools import *
 from Battleship.battleship import *
 from Battleship.ships import *
 from Battleship.playgame import *
+from Battleship.ai import *
 
 import random
 
@@ -299,4 +300,18 @@ def test_placeShip_Small_Verticle_computer():
         assert_equal(game.c_map[game.X_AXIS/2][game.Y_AXIS/2+i], 1)       
 
 
-
+def test_playgame_input_verify():
+    game = board()
+    computer = ai()
+    play = playgame(game, computer)
+    #input too short
+    assert_equal(play.verify_input('13, 13'), False)
+    #input not in right format ie no number in first place
+    assert_equal(play.verify_input('v, 13, 13'), False)
+    assert_equal(play.verify_input('13, v, 13'), False)
+    #wrong char for verticle/horizontal
+    assert_equal(play.verify_input('13, 13, b'), False)
+    #input too large or negative
+    assert_equal(play.verify_input('%d, 1, v' % (game.X_AXIS+1)), False)
+    assert_equal(play.verify_input('1, %d, v' % (game.Y_AXIS+1)), False)
+    assert_equal(play.verify_input('0, 0, v'), False)
