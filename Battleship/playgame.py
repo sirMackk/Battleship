@@ -25,6 +25,8 @@ class playgame(object):
         for i in range(len(human_ships)):
             for j in range(len(human_ships[i])):
                 self.human_ships.append(human_ships[i][j])
+        #self.human_ships is a 1d list of ship objects
+        #this function should return the human_ships list as a way to track health
 
     def computer_start(self):
         computer_ships = []
@@ -66,7 +68,9 @@ class playgame(object):
         return temp_list
 
     def verify_input(self, input):
-        
+            #update this function so it can handle both ship placement input
+            #as well as battle input
+
             #split into list
         verify = input.split(',')
         if len(verify) < 3:
@@ -77,14 +81,14 @@ class playgame(object):
 
             #verify if first two items are numbers and the third is either v or h
         try:
-            if int(verify[0]) in range(0, self.game.X_AXIS):
+            if int(verify[0]) in range(1, self.game.X_AXIS):
                 verify[0] = int(verify[0])-1
             else:
                 return False
         except ValueError:
                     return False
         try:       
-            if int(verify[0]) in range(0, self.game.Y_AXIS):
+            if int(verify[0]) in range(1, self.game.Y_AXIS):
                 verify[1] = int(verify[1])-1
             else:
                 return False

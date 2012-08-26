@@ -207,10 +207,48 @@ class board(object):
                     return False
         return True
     
-   # def battle(self, x, y, player
-    #functions responsible for battle, need to do ship placement gui first
-    #so I can figure out how to make hit points and hit/sunk ships
+    def battle(self, x, y, player, ships):
+        #xy - coordinates for attacking, player - True/False as usual, ships - list of ships from playgame.py
+        #returns false if hit is bad ie. if hit is the same as previous hit, miss, or sunk
+        #updates map when empty ocean - miss or updates map with good hit and calls health function
+        #if health 0, then for loop should mark coordinates with sunk ship
+        #maybe I should be working on copies of the main maps... but why?
+        players = {True: self.p_map, False: self.c_map}
 
+        if players[player][x][y] == 2 or players[player][x][y] == 3 or players[player][x][y] == 4:
+            return False
+        elif players[player][x][y] == 0:
+            players[player][x][y] = 2
+            #return?
+        else:
+            #ship gets hit, loses hp and may become sunk
+            return self.identify_ship(x, y, player, ships)
+        
+        #should probably return list of ships
+
+    def identify_ship(self, x, y, player, ships):
+        players = {True: p_map, False: c_map}
+        for i in len(range(ships)):
+            
+                if ships[i].getXY()[0] == x and ships[i].getXY[1] == y:
+                    ships[i].getHit()
+                    players[player][x][y] = 3
+                    self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
+        # if sunk - sink, if not - change x,y = 3 (hit) and take away hitpoint
+        #should return ships
+        return ships
+
+    def isSunk(self, x, y, player, ship):   
+        players = {True: p_map, False: c_map}
+        if ship.getHealth() <= 0:
+            if ship.getDirection() == 'horizontal':
+                for i in range(0, getSize()):
+                    players[player][i][y] = 4
+            else:
+                for i in range(0, getSize()):
+                    players[player][x][i] = 4
+        else:
+            return False
                 
-
+        
     

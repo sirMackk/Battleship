@@ -306,6 +306,8 @@ def test_playgame_input_verify():
     play = playgame(game, computer)
     #input too short
     assert_equal(play.verify_input('13, 13'), False)
+    #check if it handles correct input correctly. Note:, function subtracts 1 from user input.
+    assert_equal(play.verify_input('10, 10, v'), [9, 9, 'v'])
     #input not in right format ie no number in first place
     assert_equal(play.verify_input('v, 13, 13'), False)
     assert_equal(play.verify_input('13, v, 13'), False)
@@ -315,3 +317,7 @@ def test_playgame_input_verify():
     assert_equal(play.verify_input('%d, 1, v' % (game.X_AXIS+1)), False)
     assert_equal(play.verify_input('1, %d, v' % (game.Y_AXIS+1)), False)
     assert_equal(play.verify_input('0, 0, v'), False)
+    assert_equal(play.verify_input('-1, -5, v'), False)
+
+#def test_playgame_putship():
+    
