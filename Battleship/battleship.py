@@ -233,13 +233,15 @@ class board(object):
             print ships[i].getXY()[0] == x
             print ships[i].getXY()[1] == y
             #fix this, probably x y are bad
+            #we already know a ship has been hit, now we jsut gotta figure out which ship
+            #it was.
             if ships[i].getXY()[0] == x and ships[i].getXY()[1] == y:
                 
                 ships[i].getHit()
                 players[player][x][y] = 3
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
         # if sunk - sink, if not - change x,y = 3 (hit) and take away hitpoint
-        #should return ships
+       
         
         return ships
 
