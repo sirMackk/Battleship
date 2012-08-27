@@ -227,19 +227,24 @@ class board(object):
         #should probably return list of ships
 
     def identify_ship(self, x, y, player, ships):
-        players = {True: p_map, False: c_map}
-        for i in len(range(ships)):
-            
-                if ships[i].getXY()[0] == x and ships[i].getXY[1] == y:
-                    ships[i].getHit()
-                    players[player][x][y] = 3
-                    self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
+        players = {True: self.p_map, False: self.c_map}
+        for i in range(len(ships)):
+            print ships[i].getXY()
+            print ships[i].getXY()[0] == x
+            print ships[i].getXY()[1] == y
+            #fix this, probably x y are bad
+            if ships[i].getXY()[0] == x and ships[i].getXY()[1] == y:
+                
+                ships[i].getHit()
+                players[player][x][y] = 3
+                self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
         # if sunk - sink, if not - change x,y = 3 (hit) and take away hitpoint
         #should return ships
+        
         return ships
 
     def isSunk(self, x, y, player, ship):   
-        players = {True: p_map, False: c_map}
+        players = {True: self.p_map, False: self.c_map}
         if ship.getHealth() <= 0:
             if ship.getDirection() == 'horizontal':
                 for i in range(0, getSize()):

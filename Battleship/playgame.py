@@ -36,6 +36,8 @@ class playgame(object):
         for i in range(len(computer_ships)):
             for j in range(len(computer_ships[i])):
                 self.computer_ships.append(computer_ships[i][j])
+        #testing
+        return self.computer_ships
         
     def put_ship(self, ships, iter, player):
         temp_list = []

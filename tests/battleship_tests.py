@@ -320,4 +320,25 @@ def test_playgame_input_verify():
     assert_equal(play.verify_input('-1, -5, v'), False)
 
 #def test_playgame_putship():
+
+def test_battleship_battle():
+    game = board()
+    computer = ai()
+    play = playgame(game, computer)
+    ships = []
+    ships.append(fourSquareShip(0, 0, 'horizontal'))
+    game.p_map[0][0] = 1
+    game.p_map[1][0] = 1
+    game.p_map[2][0] = 1
+    game.p_map[3][0] = 1
+    #game.p_map[0][0] = 1
+  #  assert_equal(game.battle(0, 0, True, ships), None)
+  #  assert_equal(game.battle(0, 0, True, ships), False)
+  #  assert_equal(game.isSunk(0, 0, True, ships[0]), False)
+    assert_equal(game.p_map[0][0], 1)
+    ships = game.battle(1, 0, True, ships)
+    ships = game.battle(2, 0, True, ships)
+    assert_equal(game.p_map[1][0], 3)
+    assert_equal(ships[0].getHealth(), 4)
+    
     
