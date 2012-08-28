@@ -322,23 +322,44 @@ def test_playgame_input_verify():
 #def test_playgame_putship():
 
 def test_battleship_battle():
+    #!this test can be nicely optimized with loops!
+    #write same test except for verticle ship
+    #also check if other squares dont become hit or sunk.
     game = board()
     computer = ai()
     play = playgame(game, computer)
     ships = []
+    #this test places a horizontal ship at 0, 0 and creates and object 
+    #quite manually
     ships.append(fourSquareShip(0, 0, 'horizontal'))
     game.p_map[0][0] = 1
     game.p_map[1][0] = 1
     game.p_map[2][0] = 1
     game.p_map[3][0] = 1
-    #game.p_map[0][0] = 1
-  #  assert_equal(game.battle(0, 0, True, ships), None)
-  #  assert_equal(game.battle(0, 0, True, ships), False)
-  #  assert_equal(game.isSunk(0, 0, True, ships[0]), False)
+    #this quickly checks if there's a ship at 0, 0
     assert_equal(game.p_map[0][0], 1)
-    ships = game.battle(1, 0, True, ships)
-    ships = game.battle(2, 0, True, ships)
-    assert_equal(game.p_map[1][0], 3)
     assert_equal(ships[0].getHealth(), 4)
+    #this hits the 4 square ship with 3 hits and checks it's health
+    ships = game.battle(0, 0, True, ships)
+    #health check
+    assert_equal(ships[0].getHealth(), 3)
+    #hit, etc.
+    ships = game.battle(1, 0, True, ships)
+    assert_equal(ships[0].getHealth(), 2)
+    ships = game.battle(2, 0, True, ships)
+    assert_equal(ships[0].getHealth(), 1)
+    #this checks if hit squares turned from 1 (ship) to 3 (hit)
+    assert_equal(game.p_map[0][0], 3)
+    assert_equal(game.p_map[1][0], 3)
+    assert_equal(game.p_map[2][0], 3)
+    #hits ship 4th time, sinks it
+    ships = game.battle(3, 0, True, ships)
+    #ship hp should be 0
+    assert_equal(ships[0].getHealth(), 0)
+    #next code checks if battle sub functions marked ship as sunk
+    assert_equal(game.p_map[0][0], 4)
+    assert_equal(game.p_map[1][0], 4)
+    assert_equal(game.p_map[2][0], 4)
+    assert_equal(game.p_map[3][0], 4)
     
     

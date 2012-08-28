@@ -229,18 +229,25 @@ class board(object):
     def identify_ship(self, x, y, player, ships):
         players = {True: self.p_map, False: self.c_map}
         for i in range(len(ships)):
-            print ships[i].getXY()
-            print ships[i].getXY()[0] == x
-            print ships[i].getXY()[1] == y
-            #fix this, probably x y are bad
+
+
             #we already know a ship has been hit, now we jsut gotta figure out which ship
             #it was.
-            if ships[i].getXY()[0] == x and ships[i].getXY()[1] == y:
-                
+
+            #horizontal check:
+            if ships[i].getDirection() == 'horizontal' and x in range((ships[i].getXY()[0] + ships[i].getSize())):
+                #optimize this part!
                 ships[i].getHit()
                 players[player][x][y] = 3
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
-        # if sunk - sink, if not - change x,y = 3 (hit) and take away hitpoint
+            #verticle check:
+            elif y in range((ships[i].getXY()[1] + ships[i].getSize())):
+                ships[i].getHit()
+                players[player][x][y] = 3
+                self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
+            else:
+                return False
+
        
         
         return ships
@@ -249,10 +256,10 @@ class board(object):
         players = {True: self.p_map, False: self.c_map}
         if ship.getHealth() <= 0:
             if ship.getDirection() == 'horizontal':
-                for i in range(0, getSize()):
+                for i in range(0, ship.getSize()):
                     players[player][i][y] = 4
             else:
-                for i in range(0, getSize()):
+                for i in range(0, ship.getSize()):
                     players[player][x][i] = 4
         else:
             return False
