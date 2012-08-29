@@ -21,6 +21,9 @@ class ai(object):
         else:
             dir = 'v'
         randomCPU.append(dir)
+       # print x, y, dir
         return randomCPU
         #return '%d, %d, %s' % (x, y, dir)
+
+   # def attack
         

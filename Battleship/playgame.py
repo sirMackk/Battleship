@@ -1,13 +1,14 @@
 from battleship import *
 from ships import *
 from ai import *
+from random import randint
 
 class playgame(object):
     #start
     #human place ships
     def __init__(self, game, ai):
 
-        #self.SHIPS = {'fiveSquareShip': 1, 'fourSquareShip': 3, 'threeSquareShip': 4}
+
         self.SHIPS = {fiveSquareShip: 1, fourSquareShip: 3, threeSquareShip: 4}
         #show some welcome screen here
         
@@ -27,6 +28,7 @@ class playgame(object):
                 self.human_ships.append(human_ships[i][j])
         #self.human_ships is a 1d list of ship objects
         #this function should return the human_ships list as a way to track health
+        return self.human_ships
 
     def computer_start(self):
         computer_ships = []
@@ -55,16 +57,23 @@ class playgame(object):
                     else:
                         
                         #work in progress
-                        #son of a bitch AI, it's output doesnt get validated and causes
-                        #index out of bounds to happen in isFreeSUb
+
                         humanXY = self.ai.put_ships()
                 #print humanXY
-                direction = {'h': 'horizontal', 'v': 'verticle'}
-        
-                the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
-                game.placeShip(the_ship, player)
-                #original function
-                # the_ship = (game.placeShip(threeSquareShip(humanXY[0], humanXY[1], #direction[humanXY[2]]), player))
+                    direction = {'h': 'horizontal', 'v': 'verticle'}
+                #bug here : if ship cannot be placed due to other ship close by
+                #then shipp will be added to list of ship objects
+                #the loop will iterate, but ship wont be added to map
+
+                #old code
+                # the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
+                
+                # game.placeShip(the_ship, player)
+                #gonna try quick fix now:
+                    the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
+                    if game.placeShip(the_ship, player) == False:
+                        humanXY = False
+
             
             temp_list.append(the_ship)
         return temp_list
@@ -80,7 +89,7 @@ class playgame(object):
             #remove leading and trailing whitespaces
         for i in range(len(verify)):
                 verify[i] = verify[i].strip()
-
+        
             #verify if first two items are numbers and the third is either v or h
         try:
             if int(verify[0]) in range(1, self.game.X_AXIS):
@@ -90,7 +99,7 @@ class playgame(object):
         except ValueError:
                     return False
         try:       
-            if int(verify[0]) in range(1, self.game.Y_AXIS):
+            if int(verify[1]) in range(1, self.game.Y_AXIS):
                 verify[1] = int(verify[1])-1
             else:
                 return False
@@ -99,27 +108,38 @@ class playgame(object):
         verify[2].lower()
         if verify[2] != 'v' and verify[2] != 'h':
                 return False
-        print verify
+        
         return verify
+
+    def calcHealth(self, player):
+        players = {True: self.human_ships, False: self.computer_ships}
+
+        health = 0
+
+        for i in range(len(players[player])):
+            health += players[player][i].getHealth()
+
+        return health
 
 #MAIN GAME LOOP:
 
-# while True:
-    # game = board()
-    # computer = ai()
-    # game.drawScreen()
-    # play = playgame(game, computer)
-    # play.human_start()
-    # play.computer_start()
-   
-    # game.drawScreen()
-    # input()
+while True:
+    game = board()
+    computer = ai()
+  #  game.drawScreen()
+    play = playgame(game, computer)
+    play.human_start()
+    play.computer_start()
+    
+    game.drawScreen()
+    print play.calcHealth(True)
+    input()
 
 
 
 
     ##main game loop
-    #random player starts
+
     #other player plays
     #wanna play again?
 

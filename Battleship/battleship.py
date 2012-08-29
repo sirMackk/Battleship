@@ -191,6 +191,7 @@ class board(object):
             return self.isFreeSub(x, y, player, [-1, 0, 1], [-1, 0], temp_p_map, temp_c_map)
         #not near corners or edges
         else:
+            
             return self.isFreeSub(x, y, player, [-1, 0, 1], [-1, 0, 1], temp_p_map, temp_c_map)
         #if none of these tests already returned False, it means area if free for placing a ship
 
@@ -202,9 +203,14 @@ class board(object):
         #around a ship to see if the space around the ship is free.
         for i in xes:
             for j in yes:
-                players = {True: temp_p_map[x+j][y+i], False: temp_c_map[x+j][y+i]}
-                if players[player] == 1:
-                    return False
+                try:
+                    players = {True: temp_p_map[x+j][y+i], False: temp_c_map[x+j][y+i]}
+                    if players[player] == 1:                    
+                        return False
+                except IndexError:
+                    #sometimes computer tries some wicked numbers and ai throws index error, gotta 
+                    #check this out later, this is a temporary fix
+                    print 'Index error: ', x, y, j, i
         return True
     
     def battle(self, x, y, player, ships):
@@ -269,6 +275,7 @@ class board(object):
                     players[player][x][i] = 4
         else:
             return False
+
                 
         
     
