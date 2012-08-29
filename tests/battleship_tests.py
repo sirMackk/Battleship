@@ -321,7 +321,7 @@ def test_playgame_input_verify():
 
 #def test_playgame_putship():
 
-def test_battleship_battle():
+def test_battleship_battle_horizontal():
     #!this test can be nicely optimized with loops!
     #write same test except for verticle ship
     #also check if other squares dont become hit or sunk.
@@ -332,10 +332,17 @@ def test_battleship_battle():
     #this test places a horizontal ship at 0, 0 and creates and object 
     #quite manually
     ships.append(fourSquareShip(0, 0, 'horizontal'))
-    game.p_map[0][0] = 1
-    game.p_map[1][0] = 1
-    game.p_map[2][0] = 1
-    game.p_map[3][0] = 1
+    #adds one horizontal ship and 1 verticle object
+    ships.append(fourSquareShip(15, 7, 'horizontal'))
+    ships.append(threeSquareShip(2, 5, 'verticle'))
+    #adds above ships to map, manually
+    for i in range(5, 8):
+        game.p_map[2][i] = 1
+    for i in range(15, 19):
+        game.p_map[i][7] = 1
+    for i in range(0, 4):
+        game.p_map[i][0] = 1
+
     #this quickly checks if there's a ship at 0, 0
     assert_equal(game.p_map[0][0], 1)
     assert_equal(ships[0].getHealth(), 4)
@@ -349,17 +356,43 @@ def test_battleship_battle():
     ships = game.battle(2, 0, True, ships)
     assert_equal(ships[0].getHealth(), 1)
     #this checks if hit squares turned from 1 (ship) to 3 (hit)
-    assert_equal(game.p_map[0][0], 3)
-    assert_equal(game.p_map[1][0], 3)
-    assert_equal(game.p_map[2][0], 3)
+    for i in [0, 1, 2]:
+        assert_equal(game.p_map[i][0], 3)
+
     #hits ship 4th time, sinks it
     ships = game.battle(3, 0, True, ships)
+   # assert_equal(game.p_map[3][0], 4)
     #ship hp should be 0
     assert_equal(ships[0].getHealth(), 0)
     #next code checks if battle sub functions marked ship as sunk
-    assert_equal(game.p_map[0][0], 4)
-    assert_equal(game.p_map[1][0], 4)
-    assert_equal(game.p_map[2][0], 4)
-    assert_equal(game.p_map[3][0], 4)
+    for i in range(0, 4):        
+        assert_equal(game.p_map[i][0], 4)
+    #check 2nd 4square ship
+    for i in range(15, 19):
+        assert_equal(game.p_map[i][7], 1)
+    #check 1st 3square ship
+    for i in range(5, 8):
+        assert_equal(game.p_map[2][i], 1)
     
-    
+    #Now we will sink the verticle ship
+    ships = game.battle(2, 5, True, ships)
+    assert_equal(game.p_map[2][5], 3)
+    assert_equal(ships[2].getHealth(), 2)
+    ships = game.battle(2, 6, True, ships)
+    assert_equal(game.p_map[2][6], 3)
+    assert_equal(ships[2].getHealth(), 1)    
+    ships = game.battle(2, 7, True, ships)
+    assert_equal(game.p_map[2][5], 4)
+
+    #now we sink the other horizontal ship
+    ships = game.battle(15, 7, True, ships)
+    ships = game.battle(16, 7, True, ships)
+    assert_equal(game.p_map[15][7], 3)
+    assert_equal(game.p_map[16][7], 3)
+    assert_equal(ships[1].getHealth(), 2)
+    ships = game.battle(17, 7, True, ships)
+    ships = game.battle(18, 7, True, ships)
+    assert_equal(ships[1].getHealth(), 0)
+    for i in range(15, 19):
+        assert_equal(game.p_map[i][7], 4)
+
