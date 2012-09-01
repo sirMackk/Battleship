@@ -222,15 +222,16 @@ class board(object):
         players = {True: self.p_map, False: self.c_map}
 
         if players[player][x][y] == 2 or players[player][x][y] == 3 or players[player][x][y] == 4:
-            return False
+            return ships, False
         elif players[player][x][y] == 0:
             players[player][x][y] = 2
             #return?
         else:
             #ship gets hit, loses hp and may become sunk
             return self.identify_ship(x, y, player, ships)
-        
+        return ships
         #should probably return list of ships
+        #yeah, not returning list of ships caused error
 
     def identify_ship(self, x, y, player, ships):
         players = {True: self.p_map, False: self.c_map}
@@ -249,14 +250,14 @@ class board(object):
                 players[player][x][y] = 3
                 print ships[i].getXY()
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
-                break
+              #  break
             #verticle check:
             elif ships[i].getDirection() == 'verticle' and y in range(ships[i].getXY()[1], (ships[i].getXY()[1] + ships[i].getSize())) and x == ships[i].getXY()[0]:
                 ships[i].getHit()
                 players[player][x][y] = 3
                 print 'balaaaaa'
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
-                break
+              #  break
             
      
 

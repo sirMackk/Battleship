@@ -9,8 +9,8 @@ class ai(object):
     def put_ships(self):
         #PLACE HOLDER FUNCTION TO TEST OUT PLAYGAME.PY
         randomCPU = []
-        x = random.randint(1, self.game.X_AXIS)
-        y = random.randint(1, self.game.Y_AXIS)
+        x = random.randint(1, (self.game.X_AXIS-1))
+        y = random.randint(1, (self.game.Y_AXIS-1))
         randomCPU.append(x)
         randomCPU.append(y)
         

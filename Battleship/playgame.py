@@ -28,7 +28,7 @@ class playgame(object):
                 self.human_ships.append(human_ships[i][j])
         #self.human_ships is a 1d list of ship objects
         #this function should return the human_ships list as a way to track health
-        return self.human_ships
+      #  return self.human_ships
 
     def computer_start(self):
         computer_ships = []
@@ -39,7 +39,7 @@ class playgame(object):
             for j in range(len(computer_ships[i])):
                 self.computer_ships.append(computer_ships[i][j])
         #testing
-        return self.computer_ships
+#return self.computer_ships
         
     def put_ship(self, ships, iter, player):
         temp_list = []
@@ -52,7 +52,7 @@ class playgame(object):
                 while humanXY == False:
                     if player == True:
                         game.drawScreen()
-                        humanXY = self.verify_input(raw_input("Enter coordinates to place 3 square ship eg. x,y, h(orizontal)/v(verticle)\n"))
+                        humanXY = self.verify_input(raw_input("Enter coordinates to place 3 square ship eg. x,y, h(orizontal)/v(verticle)\n"), True)
                         #print humanXY
                     else:
                         
@@ -70,21 +70,25 @@ class playgame(object):
                 
                 # game.placeShip(the_ship, player)
                 #gonna try quick fix now:
-                    the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
-                    if game.placeShip(the_ship, player) == False:
+                the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
+                if game.placeShip(the_ship, player) == False:
                         humanXY = False
 
             
             temp_list.append(the_ship)
         return temp_list
 
-    def verify_input(self, input):
+    def verify_input(self, input, battle):
             #update this function so it can handle both ship placement input
             #as well as battle input
+            #UPDATE: Done as above. battle==true for ship placement, false for battle
 
             #split into list
         verify = input.split(',')
-        if len(verify) < 3:
+        
+        if len(verify) < 3 and battle == True:
+            return False
+        elif len(verify) < 2 and battle == False:
             return False
             #remove leading and trailing whitespaces
         for i in range(len(verify)):
@@ -105,8 +109,9 @@ class playgame(object):
                 return False
         except ValueError:
                 return False
-        verify[2].lower()
-        if verify[2] != 'v' and verify[2] != 'h':
+        if battle == True:
+            verify[2].lower()
+            if verify[2] != 'v' and verify[2] != 'h':
                 return False
         
         return verify
@@ -120,6 +125,17 @@ class playgame(object):
             health += players[player][i].getHealth()
 
         return health
+        
+    def humanAttack(self):
+        game.drawScreen()
+        human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
+        #BUG HERE! When player hits previous hit/miss/sunk, battle returns False instead of ships
+        #either should redo battle function a bit or could fix bug in this function
+        self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
+    
+        
+    
+        
 
 #MAIN GAME LOOP:
 
@@ -128,12 +144,17 @@ while True:
     computer = ai()
   #  game.drawScreen()
     play = playgame(game, computer)
-    play.human_start()
     play.computer_start()
+    play.human_start()
+    while play.calcHealth(True) > 0 and play.calcHealth(False) > 0:
+        play.humanAttack()
+      #  ai.attack()
+        
+        
     
-    game.drawScreen()
-    print play.calcHealth(True)
-    input()
+    # game.drawScreen()
+    # print play.calcHealth(True)
+    # input()
 
 
 
