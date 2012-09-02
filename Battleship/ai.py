@@ -9,8 +9,8 @@ class ai(object):
     def put_ships(self):
         #PLACE HOLDER FUNCTION TO TEST OUT PLAYGAME.PY
         randomCPU = []
-        x = random.randint(1, (self.game.X_AXIS-1))
-        y = random.randint(1, (self.game.Y_AXIS-1))
+        x = random.randint(0, (self.game.X_AXIS-1))
+        y = random.randint(0, (self.game.Y_AXIS-1))
         randomCPU.append(x)
         randomCPU.append(y)
         
@@ -25,5 +25,15 @@ class ai(object):
         return randomCPU
         #return '%d, %d, %s' % (x, y, dir)
 
-   # def attack
+    def attack(self, game, play):
+        game.drawScreen()
+       # input = False
+        while True:
+            x = random.randint(0, (game.X_AXIS-1))
+            y = random.randint(0, (game.Y_AXIS-1))
+            if game.p_map[x][y] not in (2, 3, 4):
+                play.human_ships = game.battle(x, y, True, play.human_ships)
+                break
+
+        
         

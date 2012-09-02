@@ -129,17 +129,25 @@ class playgame(object):
         
     def humanAttack(self):
         game.drawScreen()
-        input = False
-        while input == False:
-            human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
+        #input = False
+       # while input == False:
+            #human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
             #BUG HERE! When player hits previous hit/miss/sunk, battle returns False instead of ships
             #either should redo battle function a bit or could fix bug in this function
+            #BUG FIXED
+            # if human_fire != False:
+                # if game.c_map[human_fire[0]][human_fire[1]] == 2 or game.c_map[human_fire[0]][human_fire[1]] == 3 or game.c_map[human_fire[0]][human_fire[1]] == 4:
+                    # input = False
+                # else:
+                    # self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
+                    # input = True
+
+        while True:
+            human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
             if human_fire != False:
-                if game.c_map[human_fire[0]][human_fire[1]] == 2 or game.c_map[human_fire[0]][human_fire[1]] == 3 or game.c_map[human_fire[0]][human_fire[1]] == 4:
-                    input = False
-                else:
+                if game.c_map[human_fire[0]][human_fire[1]] not in (2, 3, 4):
                     self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
-                    input = True
+                    break
     
         
     
@@ -156,7 +164,7 @@ while True:
     play.human_start()
     while play.calcHealth(True) > 0 and play.calcHealth(False) > 0:
         play.humanAttack()
-      #  ai.attack()
+        computer.attack(game, play)
         
         
     
