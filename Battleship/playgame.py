@@ -64,6 +64,7 @@ class playgame(object):
                 #bug here : if ship cannot be placed due to other ship close by
                 #then shipp will be added to list of ship objects
                 #the loop will iterate, but ship wont be added to map
+                #FIXED ABOVE BUG
 
                 #old code
                 # the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
@@ -86,9 +87,9 @@ class playgame(object):
             #split into list
         verify = input.split(',')
         
-        if len(verify) < 3 and battle == True:
+        if len(verify) < 3 and battle == True and verify != False:
             return False
-        elif len(verify) < 2 and battle == False:
+        elif len(verify) < 2 and battle == False and verify != False:
             return False
             #remove leading and trailing whitespaces
         for i in range(len(verify)):
@@ -96,14 +97,14 @@ class playgame(object):
         
             #verify if first two items are numbers and the third is either v or h
         try:
-            if int(verify[0]) in range(1, self.game.X_AXIS):
+            if int(verify[0]) in range(1, (self.game.X_AXIS+1)):
                 verify[0] = int(verify[0])-1
             else:
                 return False
         except ValueError:
                     return False
         try:       
-            if int(verify[1]) in range(1, self.game.Y_AXIS):
+            if int(verify[1]) in range(1, (self.game.Y_AXIS+1)):
                 verify[1] = int(verify[1])-1
             else:
                 return False
@@ -128,10 +129,17 @@ class playgame(object):
         
     def humanAttack(self):
         game.drawScreen()
-        human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
-        #BUG HERE! When player hits previous hit/miss/sunk, battle returns False instead of ships
-        #either should redo battle function a bit or could fix bug in this function
-        self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
+        input = False
+        while input == False:
+            human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
+            #BUG HERE! When player hits previous hit/miss/sunk, battle returns False instead of ships
+            #either should redo battle function a bit or could fix bug in this function
+            if human_fire != False:
+                if game.c_map[human_fire[0]][human_fire[1]] == 2 or game.c_map[human_fire[0]][human_fire[1]] == 3 or game.c_map[human_fire[0]][human_fire[1]] == 4:
+                    input = False
+                else:
+                    self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
+                    input = True
     
         
     

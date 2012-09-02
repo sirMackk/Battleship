@@ -218,15 +218,16 @@ class board(object):
         #returns false if hit is bad ie. if hit is the same as previous hit, miss, or sunk
         #updates map when empty ocean - miss or updates map with good hit and calls health function
         #if health 0, then for loop should mark coordinates with sunk ship
+        #ABOVE IS DONE
         #maybe I should be working on copies of the main maps... but why?
         players = {True: self.p_map, False: self.c_map}
 
-        if players[player][x][y] == 2 or players[player][x][y] == 3 or players[player][x][y] == 4:
-            return ships, False
-        elif players[player][x][y] == 0:
+
+        if players[player][x][y] == 0:
             players[player][x][y] = 2
             #return?
         else:
+
             #ship gets hit, loses hp and may become sunk
             return self.identify_ship(x, y, player, ships)
         return ships
@@ -243,19 +244,19 @@ class board(object):
 
             #horizontal check:
            # print ships
-            print range(ships[i].getXY()[0], (ships[i].getXY()[0] + ships[i].getSize()))
+            #print range(ships[i].getXY()[0], (ships[i].getXY()[0] + ships[i].getSize()))
             if ships[i].getDirection() == 'horizontal' and x in range(ships[i].getXY()[0], (ships[i].getXY()[0] + ships[i].getSize())) and y == ships[i].getXY()[1]:
                 #optimize this part!
                 ships[i].getHit()
                 players[player][x][y] = 3
-                print ships[i].getXY()
+                #print ships[i].getXY()
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
               #  break
             #verticle check:
             elif ships[i].getDirection() == 'verticle' and y in range(ships[i].getXY()[1], (ships[i].getXY()[1] + ships[i].getSize())) and x == ships[i].getXY()[0]:
                 ships[i].getHit()
                 players[player][x][y] = 3
-                print 'balaaaaa'
+                #print 'balaaaaa'
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
               #  break
             
