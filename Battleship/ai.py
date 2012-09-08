@@ -7,7 +7,7 @@ class ai(object):
         self.game = board()
 
     def put_ships(self):
-        #PLACE HOLDER FUNCTION TO TEST OUT PLAYGAME.PY
+        #Actual function to place ships, placeholder was pretty good
         randomCPU = []
         x = random.randint(0, (self.game.X_AXIS-1))
         y = random.randint(0, (self.game.Y_AXIS-1))

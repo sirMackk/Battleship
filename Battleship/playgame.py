@@ -43,37 +43,32 @@ class playgame(object):
         
     def put_ship(self, ships, iter, player):
         temp_list = []
-       
+        direction = {'h': 'horizontal', 'v': 'verticle'}
         for i in range(ships.values()[iter]):
-            the_ship = False
-            while the_ship == False:
-                humanXY = False
+
+            humanXY = False
                 #do if human - run this, else, run AI ship placement from ai.py
-                while humanXY == False:
-                    if player == True:
+            while humanXY == False:
+                if player == True:
+                    while humanXY == False:
                         game.drawScreen()
                         humanXY = self.verify_input(raw_input("Enter coordinates to place 3 square ship eg. x,y, h(orizontal)/v(verticle)\n"), True)
-                        #print humanXY
-                    else:
+                        
+                else:
                         
                         #work in progress
 
-                        humanXY = self.ai.put_ships()
+                    humanXY = self.ai.put_ships()
                 #print humanXY
-                    direction = {'h': 'horizontal', 'v': 'verticle'}
+
                 #bug here : if ship cannot be placed due to other ship close by
                 #then shipp will be added to list of ship objects
                 #the loop will iterate, but ship wont be added to map
                 #FIXED ABOVE BUG
 
-                #old code
-                # the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
-                
-                # game.placeShip(the_ship, player)
-                #gonna try quick fix now:
                 the_ship = ships.keys()[iter](humanXY[0], humanXY[1], direction[humanXY[2]])
                 if game.placeShip(the_ship, player) == False:
-                        humanXY = False
+                    humanXY = False
 
             
             temp_list.append(the_ship)
@@ -129,18 +124,7 @@ class playgame(object):
         
     def humanAttack(self):
         game.drawScreen()
-        #input = False
-       # while input == False:
-            #human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
-            #BUG HERE! When player hits previous hit/miss/sunk, battle returns False instead of ships
-            #either should redo battle function a bit or could fix bug in this function
-            #BUG FIXED
-            # if human_fire != False:
-                # if game.c_map[human_fire[0]][human_fire[1]] == 2 or game.c_map[human_fire[0]][human_fire[1]] == 3 or game.c_map[human_fire[0]][human_fire[1]] == 4:
-                    # input = False
-                # else:
-                    # self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
-                    # input = True
+
 
         while True:
             human_fire = self.verify_input(raw_input('Enter coordinates to fire eg. x, y: '), False)
@@ -165,6 +149,7 @@ while True:
     while play.calcHealth(True) > 0 and play.calcHealth(False) > 0:
         play.humanAttack()
         computer.attack(game, play)
+        print play.calcHealth(True), " ", play.calcHealth(False)
         
         
     
