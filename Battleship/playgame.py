@@ -52,14 +52,13 @@ class playgame(object):
                 if player == True:
                     while humanXY == False:
                         game.drawScreen()
-                        humanXY = self.verify_input(raw_input("Enter coordinates to place 3 square ship eg. x,y, h(orizontal)/v(verticle)\n"), True)
+                        humanXY = self.verify_input(raw_input("Enter coordinates to place a ship eg. x,y, h(orizontal)/v(verticle)\n" ), True)
                         
                 else:
                         
                         #work in progress
 
                     humanXY = self.ai.put_ships()
-                #print humanXY
 
                 #bug here : if ship cannot be placed due to other ship close by
                 #then shipp will be added to list of ship objects
