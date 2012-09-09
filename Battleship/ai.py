@@ -23,20 +23,24 @@ class ai(object):
     def attack(self, game, play):
         game.drawScreen()
         if game.p_map[self.xy[0]][self.xy[1]] == 3:
-            #20% chance of cpu getting direct hit
-            chance = random.randint(0, 4)
+            #25% chance of cpu getting direct hit
+            chance = random.randint(0, 3)
             if chance == 0:
                 self.xy = self.findHuman()
                 play.human_ships = game.battle(self.xy[0], self.xy[1], True, play.human_ships)
             else:
+                print self.xy
+                xy = self.xy
                 self.xy = self.fireBlind()
-                play.human_ships = game.battle(self.xy[0], self.xy[1], True, play.human_ships)               
-                
-        while True:
-            self.xy = self.getXY()
-            if game.p_map[self.xy[0]][self.xy[1]] in (0, 1):
                 play.human_ships = game.battle(self.xy[0], self.xy[1], True, play.human_ships)
-                break
+                if game.p_map[self.xy[0]][self.xy[1]] == 2:
+                    self.xy = xy
+        else:              
+            while True:
+                self.xy = self.getXY()
+                if game.p_map[self.xy[0]][self.xy[1]] in (0, 1):
+                    play.human_ships = game.battle(self.xy[0], self.xy[1], True, play.human_ships)
+                    break
                 
 
     def getXY(self):
