@@ -259,11 +259,7 @@ class board(object):
                 #print 'balaaaaa'
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
               #  break
-            
-     
-
-       
-        
+                   
         return ships
 
     def isSunk(self, x, y, player, ship):   
@@ -277,7 +273,3 @@ class board(object):
                     players[player][x][i] = 4
         else:
             return False
-
-                
-        
-    

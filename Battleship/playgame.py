@@ -9,7 +9,7 @@ class playgame(object):
     def __init__(self, game, ai):
 
 
-        self.SHIPS = {fiveSquareShip: 1, fourSquareShip: 3, threeSquareShip: 4}
+        self.SHIPS = {fiveSquareShip: 2, fourSquareShip: 3, threeSquareShip: 4}
         #show some welcome screen here
         
         #this creates the board and draws it
@@ -132,10 +132,6 @@ class playgame(object):
                     self.computer_ships = game.battle(human_fire[0], human_fire[1], False, self.computer_ships)
                     break
     
-        
-    
-        
-
 #MAIN GAME LOOP:
 
 while True:
@@ -150,18 +146,5 @@ while True:
         computer.attack(game, play)
         print play.calcHealth(True), " ", play.calcHealth(False)
         
-        
-    
-    # game.drawScreen()
-    # print play.calcHealth(True)
-    # input()
-
-
-
-
-    ##main game loop
-
-    #other player plays
-    #wanna play again?
 
 #make tests for this too
