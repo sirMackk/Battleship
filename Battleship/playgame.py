@@ -137,14 +137,11 @@ class playgame(object):
 while True:
     game = board()
     computer = ai()
-  #  game.drawScreen()
     play = playgame(game, computer)
     play.computer_start()
     play.human_start()
     while play.calcHealth(True) > 0 and play.calcHealth(False) > 0:
         play.humanAttack()
         computer.attack(game, play)
-        print play.calcHealth(True), " ", play.calcHealth(False)
+        print "Human health: %d \nComputer health: %d" % (play.calcHealth(True), play.calcHealth(False))
         
-
-#make tests for this too

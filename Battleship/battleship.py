@@ -1,14 +1,6 @@
 import random
 from ships import *
 
-#TODO - make mutator functions for the board game
-#     - an interface to place ships along with rotation
-#     - game interface
-#     - make runner class that runs the game
-#     - make interface class that gives a connections between player and board
-#     - WORK ON SHIP PLACEMENT FUNCTION
-#     - WORK ON isFree FUNCTION - DONE
-#     - redo function and class names according to pep 8
 class board(object):
 
     def __init__(self):
@@ -243,13 +235,11 @@ class board(object):
             #it was.
 
             #horizontal check:
-           # print ships
-            #print range(ships[i].getXY()[0], (ships[i].getXY()[0] + ships[i].getSize()))
             if ships[i].getDirection() == 'horizontal' and x in range(ships[i].getXY()[0], (ships[i].getXY()[0] + ships[i].getSize())) and y == ships[i].getXY()[1]:
                 #optimize this part!
                 ships[i].getHit()
                 players[player][x][y] = 3
-                #print ships[i].getXY()
+
                 self.isSunk(ships[i].getXY()[0], ships[i].getXY()[1], player, ships[i])
               #  break
             #verticle check:
